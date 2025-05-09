@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play & Earn Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+    section {
+      padding: 2rem;
+      margin: auto;
+      max-width: 800px;
+      background-color: #fff;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #222;
+      color: #ddd;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      margin: 10px 0;
+    }
+    ul li a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    ul li a:hover {
+      text-decoration: underline;
+    }
+    #referral-section {
+      background-color: #e0f7fa;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border: 1px solid #00acc1;
+      border-radius: 8px;
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      width: 60%;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin-top: 10px;
+      border: none;
+      background-color: #00acc1;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #00838f;
+    }
+    #share-link {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    @media (max-width: 600px) {
+      section {
+        padding: 1rem;
+      }
+      input[type="text"] {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Play & Earn</h1>
+    <nav>
+      <a href="#games">Games</a>
+      <a href="#surveys">Surveys</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <section id="hero">
+    <h2>Play Games, Complete Surveys, and Earn Money!</h2>
+    <p>Enjoy fun games and earn rewards. No fees, just fun and earning.</p>
+  </section>
+
+  <section id="referral-section">
+    <h3>Enter Your Referral Code</h3>
+    <input type="text" id="referralInput" placeholder="Enter your referral code">
+    <br>
+    <button onclick="applyReferral()">Apply</button>
+    <p id="referralMessage"></p>
+    <p id="share-link"></p>
+  </section>
+
+  <section id="games">
+    <h2>Featured Games</h2>
+    <ul>
+      <li><a href="https://affiliategame1.com" class="affiliate-link" target="_blank">Game 1 - Play & Earn</a></li>
+      <li><a href="https://affiliategame2.com" class="affiliate-link" target="_blank">Game 2 - Fun Rewards</a></li>
+      <li><a href="https://affiliategame3.com" class="affiliate-link" target="_blank">Game 3 - Instant Play</a></li>
+    </ul>
+  </section>
+
+  <section id="surveys">
+    <h2>Earn by Completing Surveys</h2>
+    <ul>
+      <li><a href="https://affiliatesurvey1.com" class="affiliate-link" target="_blank">Survey Provider 1</a></li>
+      <li><a href="https://affiliatesurvey2.com" class="affiliate-link" target="_blank">Survey Provider 2</a></li>
+    </ul>
+  </section>
+
+  <section id="about">
+    <h2>About Our Platform</h2>
+    <p>We provide a platform where users can play games, complete surveys, and earn rewards through affiliate programs. Share with friends, refer and earn more!</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Play & Earn. All rights reserved.</p>
+    <p>Affiliate Disclosure: This site contains affiliate links and we may earn commissions.</p>
+  </footer>
+
+  <script>
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    function applyReferral() {
+      const referralCode = document.getElementById('referralInput').value.trim();
+      const message = document.getElementById('referralMessage');
+      const shareLink = document.getElementById('share-link');
+
+      if (referralCode !== '') {
+        message.textContent = `Referral code "${referralCode}" applied!`;
+        localStorage.setItem('referralCode', referralCode);
+
+        const links = document.querySelectorAll('.affiliate-link');
+        links.forEach(link => {
+          const url = new URL(link.href);
+          url.searchParams.set('ref', referralCode);
+          link.href = url.toString();
+        });
+
+        shareLink.innerHTML = `Your referral link: <code>${window.location.origin + window.location.pathname}?ref=${referralCode}</code>`;
+      } else {
+        message.textContent = "Please enter a valid referral code.";
+      }
+    }
+
+    window.onload = () => {
+      let code = getParam('ref') || localStorage.getItem('referralCode');
+      if (code) {
+        document.getElementById('referralInput').value = code;
+        applyReferral();
+      }
+    };
+  </script>
+</body>
+</html>
